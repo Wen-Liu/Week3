@@ -11,7 +11,6 @@ import android.widget.ImageButton;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ImageButton imageButton_0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,18 +60,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void btnChange(ImageButton button, final int actionDown, final int actionUp) {
+    private void btnChange(final ImageButton button, final int actionDown, final int actionUp) {
             button.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View view, MotionEvent motionEvent) {
                     if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                         //按下的時候改變圖
-                        view.setBackgroundResource(actionDown);
+                        button.setImageResource(actionDown);
                     }
                     if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                         //起來的時候恢復圖
                         view.performClick();
-                        view.setBackgroundResource(actionUp);
+                        button.setImageResource(actionUp);
                     }
                     return false;
                 }
