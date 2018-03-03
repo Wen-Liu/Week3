@@ -1,15 +1,40 @@
 package com.example.wencw_liu.calculator;
 
-import android.graphics.Color;
-import android.graphics.DrawFilter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
+
 
 public class MainActivity extends AppCompatActivity {
+    private ImageButton imageButton_0;
+    private ImageButton imageButton_1;
+    private ImageButton imageButton_2;
+    private ImageButton imageButton_3;
+    private ImageButton imageButton_4;
+    private ImageButton imageButton_5;
+    private ImageButton imageButton_6;
+    private ImageButton imageButton_7;
+    private ImageButton imageButton_8;
+    private ImageButton imageButton_9;
+    private ImageButton imageButton_changeSign;
+    private ImageButton imageButton_divide;
+    private ImageButton imageButton_equals;
+    private ImageButton imageButton_minus;
+    private ImageButton imageButton_percent;
+    private ImageButton imageButton_plus;
+    private ImageButton imageButton_point;
+    private ImageButton imageButton_reset;
+    private ImageButton imageButton_times;
+    private TextView textView1;
+    private TextView textView2;
+    private String stringSave = "";
+    private double lastNum = 0.0;
+    private double answer = 0.0;
+    private boolean continueOperator = false;
+    private char lastOperate;
 
 
     @Override
@@ -17,25 +42,49 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ImageButton imageButton_0 = findViewById(R.id.imageButton_0);
-        ImageButton imageButton_1 = findViewById(R.id.imageButton_1);
-        ImageButton imageButton_2 = findViewById(R.id.imageButton_2);
-        ImageButton imageButton_3 = findViewById(R.id.imageButton_3);
-        ImageButton imageButton_4 = findViewById(R.id.imageButton_4);
-        ImageButton imageButton_5 = findViewById(R.id.imageButton_5);
-        ImageButton imageButton_6 = findViewById(R.id.imageButton_6);
-        ImageButton imageButton_7 = findViewById(R.id.imageButton_7);
-        ImageButton imageButton_8 = findViewById(R.id.imageButton_8);
-        ImageButton imageButton_9 = findViewById(R.id.imageButton_9);
-        ImageButton imageButton_changeSign = findViewById(R.id.imageButton_changesign);
-        ImageButton imageButton_divide = findViewById(R.id.imageButton_divide);
-        ImageButton imageButton_equals = findViewById(R.id.imageButton_equals);
-        ImageButton imageButton_minus = findViewById(R.id.imageButton_minus);
-        ImageButton imageButton_percent = findViewById(R.id.imageButton_percent);
-        ImageButton imageButton_plus =findViewById(R.id.imageButton_plus);
-        ImageButton imageButton_point = findViewById(R.id.imageButton_point);
-        ImageButton imageButton_reset = findViewById(R.id.imageButton_reset);
-        ImageButton imageButton_times = findViewById(R.id.imageButton_times);
+        imageButton_0 = findViewById(R.id.imageButton_0);
+        imageButton_1 = findViewById(R.id.imageButton_1);
+        imageButton_2 = findViewById(R.id.imageButton_2);
+        imageButton_3 = findViewById(R.id.imageButton_3);
+        imageButton_4 = findViewById(R.id.imageButton_4);
+        imageButton_5 = findViewById(R.id.imageButton_5);
+        imageButton_6 = findViewById(R.id.imageButton_6);
+        imageButton_7 = findViewById(R.id.imageButton_7);
+        imageButton_8 = findViewById(R.id.imageButton_8);
+        imageButton_9 = findViewById(R.id.imageButton_9);
+        imageButton_changeSign = findViewById(R.id.imageButton_changesign);
+        imageButton_divide = findViewById(R.id.imageButton_divide);
+        imageButton_equals = findViewById(R.id.imageButton_equals);
+        imageButton_minus = findViewById(R.id.imageButton_minus);
+        imageButton_percent = findViewById(R.id.imageButton_percent);
+        imageButton_plus =findViewById(R.id.imageButton_plus);
+        imageButton_point = findViewById(R.id.imageButton_point);
+        imageButton_reset = findViewById(R.id.imageButton_reset);
+        imageButton_times = findViewById(R.id.imageButton_times);
+        textView1 = findViewById(R.id.textView1);
+        textView2 = findViewById(R.id.textView2);
+
+
+        imageButton_0.setOnClickListener(listener);
+        imageButton_1.setOnClickListener(listener);
+        imageButton_2.setOnClickListener(listener);
+        imageButton_3.setOnClickListener(listener);
+        imageButton_4.setOnClickListener(listener);
+        imageButton_5.setOnClickListener(listener);
+        imageButton_6.setOnClickListener(listener);
+        imageButton_7.setOnClickListener(listener);
+        imageButton_8.setOnClickListener(listener);
+        imageButton_9.setOnClickListener(listener);
+        imageButton_changeSign.setOnClickListener(listener);
+        imageButton_divide.setOnClickListener(listener);
+        imageButton_equals.setOnClickListener(listener);
+        imageButton_minus.setOnClickListener(listener);
+        imageButton_percent.setOnClickListener(listener);
+        imageButton_plus.setOnClickListener(listener);
+        imageButton_point.setOnClickListener(listener);
+        imageButton_reset.setOnClickListener(listener);
+        imageButton_times.setOnClickListener(listener);
+
 
         btnChange(imageButton_0, R.drawable.calculator_0_hover, R.drawable.calculator_0);
         btnChange(imageButton_1, R.drawable.calculator_1_hover, R.drawable.calculator_1);
@@ -56,28 +105,256 @@ public class MainActivity extends AppCompatActivity {
         btnChange(imageButton_point, R.drawable.calculator_point_hover, R.drawable.calculator_point);
         btnChange(imageButton_reset, R.drawable.calculator_reset_hover, R.drawable.calculator_reset);
         btnChange(imageButton_times, R.drawable.calculator_times_hover, R.drawable.calculator_times);
-
     }
+
+
+    private View.OnClickListener listener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+
+                case R.id.imageButton_plus:
+                    if (continueOperator){
+                        answer = 0;
+                        switch (lastOperate) {
+                            case '+':
+                                answer = lastNum + Double.parseDouble(stringSave);
+                                break;
+                            default:
+                                break;
+                        }
+                        lastNum = answer;
+                    } else {
+                        continueOperator = true;
+                        answer = lastNum + Double.parseDouble(stringSave);
+                        lastNum = answer;
+                    }
+                    stringSave = "";
+                    lastOperate = '+';
+                    textView1.setText(textView1.getText().toString() + "+");
+                    textView2.setText(String.valueOf(lastNum));
+                    break;
+
+                case R.id.imageButton_minus:
+                    textView1.setText(textView1.getText().toString() + "-");
+                    break;
+
+                case R.id.imageButton_times:
+                    textView1.setText(textView1.getText().toString() + "*");
+                    break;
+
+                case R.id.imageButton_divide:
+                    textView1.setText(textView1.getText().toString() + "/");
+                    break;
+
+                case R.id.imageButton_equals:
+                    answer = 0;
+                    switch (lastOperate){
+                        case '+':
+                            answer = lastNum + Double.parseDouble(stringSave);
+                            break;
+                        case '-':
+                            answer = lastNum - Double.parseDouble(stringSave);
+                            break;
+                        case '*':
+                            answer = lastNum * Double.parseDouble(stringSave);
+                            lastNum = answer;
+                            break;
+                        case '/':
+                            answer = lastNum / Double.parseDouble(stringSave);
+                            lastNum = answer;
+                            break;
+                        default:
+                            break;
+                    }
+                    stringSave = "0";
+                    lastNum = answer;
+                    continueOperator = false;
+                    textView2.setText(String.valueOf(lastNum));
+                    break;
+
+                case R.id.imageButton_point:
+                    if (stringSave.indexOf(".") == -1) {
+                        textView1.setText(textView1.getText().toString() + ".");
+                        stringSave += ".";
+                    }
+                    break;
+
+                case R.id.imageButton_0:
+                    if(textView1.getText().toString().equals("0")) {
+                        textView1.setText("0");
+                        stringSave = "0";
+                    } else {
+                        textView1.setText(textView1.getText().toString() + "0");
+                        stringSave += "0";
+                    }
+                    break;
+
+                case R.id.imageButton_1:
+                    if(textView1.getText().toString().equals("0")) {
+                        textView1.setText("1");
+                        stringSave = "1";
+                    } else {
+                        textView1.setText(textView1.getText().toString() + "1");
+                        stringSave += "1";
+                    }
+                    break;
+
+                case R.id.imageButton_2:
+                    if(textView1.getText().toString().equals("0")) {
+                        textView1.setText("2");
+                        stringSave = "2";
+                    } else {
+                        textView1.setText(textView1.getText().toString() + "2");
+                        stringSave += "2";
+                    }
+                    break;
+
+                case R.id.imageButton_3:
+                    if(textView1.getText().toString().equals("0")) {
+                        textView1.setText("3");
+                        stringSave = "3";
+                    } else {
+                        textView1.setText(textView1.getText().toString() + "3");
+                        stringSave += "3";
+                    }
+                    break;
+
+                case R.id.imageButton_4:
+                    if(textView1.getText().toString().equals("0")) {
+                        textView1.setText("4");
+                        stringSave = "4";
+                    } else {
+                        textView1.setText(textView1.getText().toString() + "4");
+                        stringSave += "4";
+                    }
+                    break;
+
+                case R.id.imageButton_5:
+                    if(textView1.getText().toString().equals("0")) {
+                        textView1.setText("5");
+                        stringSave = "5";
+                    } else {
+                        textView1.setText(textView1.getText().toString() + "5");
+                        stringSave += "5";
+                    }
+                    break;
+
+                case R.id.imageButton_6:
+                    if(textView1.getText().toString().equals("0")) {
+                        textView1.setText("6");
+                        stringSave = "6";
+                    } else {
+                        textView1.setText(textView1.getText().toString() + "6");
+                        stringSave += "6";
+                    }
+                    break;
+
+                case R.id.imageButton_7:
+                    if(textView1.getText().toString().equals("0")) {
+                        textView1.setText("7");
+                        stringSave = "7";
+                    } else {
+                        textView1.setText(textView1.getText().toString() + "7");
+                        stringSave += "7";
+                    }
+                    break;
+
+                case R.id.imageButton_8:
+                    if(textView1.getText().toString().equals("0")) {
+                        textView1.setText("8");
+                        stringSave = "8";
+                    } else {
+                        textView1.setText(textView1.getText().toString() + "8");
+                        stringSave += "8";
+                    }
+                    break;
+
+                case R.id.imageButton_9:
+                    if(textView1.getText().toString().equals("0")) {
+                        textView1.setText("9");
+                        stringSave = "9";
+                    } else {
+                        textView1.setText(textView1.getText().toString() + "9");
+                        stringSave += "9";
+                    }
+                    break;
+
+                case R.id.imageButton_reset:
+                    textView1.setText("");
+                    textView2.setText("");
+                    stringSave = "0";
+                    answer = 0;
+                    lastNum = 0;
+                    continueOperator = false;
+                    lastOperate = ' ';
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    };
+
+    private View.OnClickListener listener2= new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.imageButton_0:
+                    textView1.setText(textView1.getText().toString() + "0");
+                    break;
+
+                case R.id.imageButton_1:
+                    textView1.setText(textView1.getText().toString() + "1");
+                    break;
+
+                case R.id.imageButton_reset:
+                    textView1.setText("");
+                    break;
+            }
+        }
+    };
+   /* private View.OnTouchListener listener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View v, MotionEvent Event) {
+            switch (v.getId()) {
+                case R.id.imageButton_0:
+                    textView1.setText(textView1.getText().toString()+"0");
+
+                    break;
+
+                case R.id.imageButton_1:
+                    textView1.setText(textView1.getText().toString()+"1");
+
+                    break;
+
+                case R.id.imageButton_reset:
+                    textView1.setText("");
+                    break;
+
+
+            }
+
+            return false;
+        }
+    };*/
 
 
     private void btnChange(final ImageButton button, final int actionDown, final int actionUp) {
             button.setOnTouchListener(new View.OnTouchListener() {
                 @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                public boolean onTouch(View v, MotionEvent Event) {
+                    if (Event.getAction() == MotionEvent.ACTION_DOWN) {
                         //按下的時候改變圖
                         button.setImageResource(actionDown);
                     }
-                    if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    if (Event.getAction() == MotionEvent.ACTION_UP) {
                         //起來的時候恢復圖
-                        view.performClick();
                         button.setImageResource(actionUp);
                     }
                     return false;
                 }
             });
         }
-
-
 
 }
