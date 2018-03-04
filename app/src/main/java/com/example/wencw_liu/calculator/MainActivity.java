@@ -32,13 +32,13 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton imageButton_times;
     private TextView textView1;
     private TextView textView2;
-    private String stringSave = "0";
+    private String stringSave = "";
     private ArrayList<String> formula = new ArrayList();
     private double lastNum = 0;
     private double answer = 0;
-    private double roundNum = 1000000;
-    private boolean continueOperator = false;
-    private char lastOperate;
+    private double roundNum = 100000000;
+    //private boolean continueOperator = false;
+    //private char lastOperate;
 
 
     @Override
@@ -117,82 +117,204 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.imageButton_plus:
-                    formula.add(stringSave);
-                    stringSave = "0";
-                    formula.add("+");
-                    //operatorCalculate();
-                    //lastOperate = '+';
-                    textView1.setText(textView1.getText().toString() + "+");
+                    if (stringSave.equals("") && formula.size() > 0) {
+                        String lastOfFormula = formula.get(formula.size() - 1);
+                        switch (lastOfFormula) {
+                            case "+":
+                                break;
+                            case "-":
+                                break;
+                            case "*":
+                                formula.set(formula.size() - 1, "+");
+                                textView1.setText(textView1.getText().toString().substring(0, textView1.getText().toString().length() - 1) + "+");
+                                break;
+                            case "/":
+                                formula.set(formula.size() - 1, "+");
+                                textView1.setText(textView1.getText().toString().substring(0, textView1.getText().toString().length() - 1) + "+");
+                                break;
+                            default:
+                                formula.add("+");
+                                textView1.setText(textView1.getText().toString() + "+");
+                                break;
+                        }
+                    } else if (stringSave != "") {
+                        formula.add(stringSave);
+                        stringSave = "";
+                        formula.add("+");
+                        textView1.setText(textView1.getText().toString() + "+");
+                    }
                     break;
+
 
                 case R.id.imageButton_minus:
-                    formula.add(stringSave);
-                    stringSave = "0";
-                    formula.add("-");
-                    //operatorCalculate();
-                    //lastOperate = '+';
-                    textView1.setText(textView1.getText().toString() + "-");
+                    if (stringSave.equals("") && formula.size() > 0) {
+                        String lastOfFormula = formula.get(formula.size() - 1);
+                        switch (lastOfFormula) {
+                            case "-":
+                                if (formula.get(formula.size() - 2).equals("-")) {
+                                    break;
+                                } else {
+                                    formula.add("-");
+                                    textView1.setText(textView1.getText().toString() + "-");
+                                    break;
+                                }
+                            default:
+                                formula.add("-");
+                                textView1.setText(textView1.getText().toString() + "-");
+                                break;
+                        }
+                    } else if (stringSave != "") {
+                        formula.add(stringSave);
+                        stringSave = "";
+                        formula.add("-");
+                        textView1.setText(textView1.getText().toString() + "-");
+                    }
                     break;
+
 
                 case R.id.imageButton_times:
-                    formula.add(stringSave);
-                    stringSave = "0";
-                    formula.add("*");
-                    //operatorCalculate();
-                    //lastOperate = '+';
-                    textView1.setText(textView1.getText().toString() + "*");
+                    if (stringSave.equals("") && formula.size() > 0) {
+                        String lastOfFormula = formula.get(formula.size() - 1);
+                        switch (lastOfFormula) {
+                            case "+":
+                                formula.set(formula.size() - 1, "*");
+                                textView1.setText(textView1.getText().toString().substring(0, textView1.getText().toString().length() - 1) + "*");
+                                break;
+                            case "-":
+                                formula.set(formula.size() - 1, "*");
+                                textView1.setText(textView1.getText().toString().substring(0, textView1.getText().toString().length() - 1) + "*");
+                                break;
+                            case "*":
+                                break;
+                            case "/":
+                                formula.set(formula.size() - 1, "*");
+                                textView1.setText(textView1.getText().toString().substring(0, textView1.getText().toString().length() - 1) + "*");
+                                break;
+                            default:
+                                formula.add("*");
+                                textView1.setText(textView1.getText().toString() + "*");
+                                break;
+                        }
+                    } else if (stringSave != "") {
+                        formula.add(stringSave);
+                        stringSave = "";
+                        formula.add("*");
+                        textView1.setText(textView1.getText().toString() + "*");
+                    }
                     break;
+
 
                 case R.id.imageButton_divide:
-                    formula.add(stringSave);
-                    stringSave = "0";
-                    formula.add("/");
-                    //operatorCalculate();
-                    //lastOperate = '+';
-                    textView1.setText(textView1.getText().toString() + "/");
+                    if (stringSave.equals("") && formula.size() > 0) {
+                        String lastOfFormula = formula.get(formula.size() - 1);
+                        switch (lastOfFormula) {
+                            case "+":
+                                formula.set(formula.size() - 1, "/");
+                                textView1.setText(textView1.getText().toString().substring(0, textView1.getText().toString().length() - 1) + "/");
+                                break;
+                            case "-":
+                                formula.set(formula.size() - 1, "/");
+                                textView1.setText(textView1.getText().toString().substring(0, textView1.getText().toString().length() - 1) + "/");
+                                break;
+                            case "*":
+                                formula.set(formula.size() - 1, "/");
+                                textView1.setText(textView1.getText().toString().substring(0, textView1.getText().toString().length() - 1) + "/");
+                                break;
+                            case "/":
+                                break;
+                            default:
+                                formula.add("/");
+                                textView1.setText(textView1.getText().toString() + "/");
+                                break;
+                        }
+                    } else if (stringSave != "") {
+                        formula.add(stringSave);
+                        stringSave = "";
+                        formula.add("/");
+                        textView1.setText(textView1.getText().toString() + "/");
+                    }
                     break;
+
 
                 case R.id.imageButton_equals:
-                    formula.add(stringSave);
-                    stringSave = "0";
-                    for (int i = 0; i < formula.size(); i++) {
-                        if (formula.get(i) == "*") {
-                            lastNum = Double.parseDouble(formula.get(i - 1)) * Double.parseDouble(formula.get(i + 1));
-                            formula.set(i - 1, String.valueOf(lastNum));
-                            formula.remove(i);
-                            formula.remove(i);
-                            i--;
+                    if (stringSave.length() != 0) {
+                        formula.add(stringSave);
+                        stringSave = "";
+                    }
+                    if (formula.size() > 1 && formula.get(formula.size() - 1) != "+"
+                            && formula.get(formula.size() - 1) != "-" && formula.get(formula.size() - 1) != "*"
+                            && formula.get(formula.size() - 1) != "/") {
+                        for (int i = 0; i < formula.size(); i++) {
+                            if (formula.get(i).equals("-") &&
+                                    (formula.get(i - 1).equals("+") || formula.get(i - 1).equals("-") ||
+                                            formula.get(i - 1).equals("*") || formula.get(i - 1).equals("/"))) {
+                                lastNum = (-1) * Double.parseDouble(formula.get(i + 1));
+                                formula.set(i + 1, String.valueOf(lastNum));
+                                formula.remove(i);
+                            }
+                        }
 
-                        } else if (formula.get(i) == "/") {
-                            lastNum = Double.parseDouble(formula.get(i - 1)) / Double.parseDouble(formula.get(i + 1));
-                            formula.set(i - 1, String.valueOf(lastNum));
-                            formula.remove(i);
-                            formula.remove(i);
-                            i--;
+                        for (int i = 0; i < formula.size(); i++) {
+                            switch (formula.get(i)) {
+                                case "*":
+                                    lastNum = Double.parseDouble(formula.get(i - 1)) * Double.parseDouble(formula.get(i + 1));
+                                    formula.set(i - 1, String.valueOf(lastNum));
+                                    formula.remove(i);
+                                    formula.remove(i);
+                                    i--;
+                                    break;
+                                case "/":
+                                    lastNum = Double.parseDouble(formula.get(i - 1)) / Double.parseDouble(formula.get(i + 1));
+                                    formula.set(i - 1, String.valueOf(lastNum));
+                                    formula.remove(i);
+                                    formula.remove(i);
+                                    i--;
+                                    break;
+                                case "%":
+                                    lastNum = Double.parseDouble(formula.get(i - 1)) * 0.01;
+                                    formula.set(i - 1, String.valueOf(lastNum));
+                                    formula.remove(i);
+                                    i--;
+                                    break;
+                            }
+                        }
+
+                        for (int i = 0; i < formula.size(); i++) {
+                            if (formula.get(i).equals("-")) {
+                                lastNum = Double.parseDouble(formula.get(i - 1)) - Double.parseDouble(formula.get(i + 1));
+                                formula.set(i - 1, String.valueOf(lastNum));
+                                formula.remove(i);
+                                formula.remove(i);
+                                i--;
+                            } else if (formula.get(i).equals("+")) {
+                                lastNum = Double.parseDouble(formula.get(i - 1)) + Double.parseDouble(formula.get(i + 1));
+                                formula.set(i - 1, String.valueOf(lastNum));
+                                formula.remove(i);
+                                formula.remove(i);
+                                i--;
+                            }
                         }
                     }
-
-                    for (int i = 0; i < formula.size(); i++) {
-                        if (formula.get(i) == "+") {
-                            lastNum = Double.parseDouble(formula.get(i - 1)) + Double.parseDouble(formula.get(i + 1));
-                            formula.set(i - 1, String.valueOf(lastNum));
-                            formula.remove(i);
-                            formula.remove(i);
-                            i--;
-
-                        } else if (formula.get(i) == "-") {
-                            lastNum = Double.parseDouble(formula.get(i - 1)) - Double.parseDouble(formula.get(i + 1));
-                            formula.set(i - 1, String.valueOf(lastNum));
-                            formula.remove(i);
-                            formula.remove(i);
-                            i--;
-                        }
-                    }
-
-                    textView2.setText(String.valueOf(formula.get(0)));
-                    //operatorCalculate();
-                    //lastOperate = '=';
+                    answer = Math.round(roundNum*Double.parseDouble(formula.get(0)))/roundNum;
+                    textView2.setText(String.valueOf(answer));
                     break;
+
+
+                case R.id.imageButton_percent:
+                    if (textView1.getText().toString().equals("0")) {
+                        textView1.setText("%");
+                        stringSave = "%";
+                    } else if (stringSave.length() != 0) {
+                        formula.add(stringSave);
+                        stringSave = "";
+                        formula.add("%");
+                        textView1.setText(textView1.getText().toString() + "%");
+                    }
+                    break;
+
+                case R.id.imageButton_changesign:
+
+
 
                 case R.id.imageButton_point:
                     if (stringSave.indexOf(".") == -1) {
@@ -309,11 +431,9 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.imageButton_reset:
                     textView1.setText("");
                     textView2.setText("");
-                    stringSave = "0";
+                    stringSave = "";
                     answer = 0;
                     lastNum = 0;
-                    continueOperator = false;
-                    lastOperate = ' ';
                     formula.clear();
                     break;
 
@@ -323,7 +443,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    private void operatorCalculate() {
+    /*private void operatorCalculate() {
         if (continueOperator) {
             answer = 0;
             switch (lastOperate) {
@@ -353,7 +473,7 @@ public class MainActivity extends AppCompatActivity {
         lastNum = Math.round(roundNum * answer) / roundNum;
         stringSave = "0";
         textView2.setText(String.valueOf(lastNum));
-    }
+    }*/
 
     private void btnChange(final ImageButton button, final int actionDown, final int actionUp) {
         button.setOnTouchListener(new View.OnTouchListener() {
